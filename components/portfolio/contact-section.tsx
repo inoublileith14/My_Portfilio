@@ -8,21 +8,22 @@ const socialLinks = [
   {
     name: "GitHub",
     icon: Github,
-    href: "https://github.com",
+    href: "https://github.com/inoublileith14",
     color: "#f5f5f5"
   },
   {
     name: "LinkedIn",
     icon: Linkedin,
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/in/inoubli-leith-352b05275/",
     color: "#00ffff"
-  },
+  }
+  /* ,
   {
     name: "Twitter",
     icon: Twitter,
     href: "https://twitter.com",
     color: "#a855f7"
-  }
+  } */
 ]
 
 export function ContactSection() {
