@@ -63,7 +63,7 @@ const projects: Project[] = [
       "/images/projects/yup-mobility-users.jpg"
     ],
     liveUrl: "https://dashboard.yup.bike",
-    githubUrl: "https://github.com/leithinoubli/yup-mobility-dashboard",
+    //githubUrl: "https://github.com/leithinoubli/yup-mobility-dashboard",
     highlights: [
       { label: "Vehicles Tracked", value: "5,000+" },
       { label: "Real-time Updates", value: "<100ms" },
@@ -93,7 +93,7 @@ const projects: Project[] = [
       "/images/projects/yup-unlock.jpg"
     ],
     liveUrl: "https://yup.bike",
-    githubUrl: "https://github.com/leithinoubli/yup-bike-app",
+    //githubUrl: "https://github.com/leithinoubli/yup-bike-app",
     highlights: [
       { label: "Active Users", value: "10K+" },
       { label: "Daily Rides", value: "2,500+" },
@@ -123,7 +123,7 @@ const projects: Project[] = [
       "/images/projects/hit-analytics.jpg"
     ],
     liveUrl: "https://hitsalerts.com",
-    githubUrl: "https://github.com/leithinoubli/hit-monitoring",
+    //githubUrl: "https://github.com/leithinoubli/hit-monitoring",
     highlights: [
       { label: "Detection Accuracy", value: "98%" },
       { label: "Response Time", value: "<30s" },
@@ -181,8 +181,7 @@ const projects: Project[] = [
       "/images/projects/clinic-appointments.jpg",
       "/images/projects/clinic-video.jpg"
     ],
-    liveUrl: "https://clinic-management.app",
-    githubUrl: "https://github.com/leithinoubli/clinic-management",
+    githubUrl: "https://github.com/inoublileith14/Kine-master",
     highlights: [
       { label: "Patients", value: "15K+" },
       { label: "Appointments/Day", value: "200+" },
