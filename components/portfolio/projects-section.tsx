@@ -70,36 +70,7 @@ const projects: Project[] = [
       { label: "Uptime", value: "99.9%" }
     ]
   },
-  {
-    title: "Yup Bike Tracking App",
-    description: "Real-time bike tracking application with GPS integration, Mapbox visualization, and BLE connectivity for smart lock features.",
-    fullDescription: "A comprehensive mobile application designed for Yup mobility services, enabling users to locate, unlock, and track bikes in real-time. The app integrates advanced GPS tracking with Mapbox for precise location visualization and uses Bluetooth Low Energy (BLE) protocols for seamless smart lock connectivity.",
-    icon: MapPin,
-    tech: ["Flutter", "GPS", "Mapbox", "BLE"],
-    color: "#22c55e",
-    gradient: "from-green-500/20 to-emerald-500/20",
-    features: [
-      "Real-time GPS tracking with sub-meter accuracy",
-      "Interactive Mapbox-based map interface",
-      "BLE smart lock integration for keyless access",
-      "Trip history and statistics dashboard",
-      "Push notifications for ride updates"
-    ],
-    role: "Lead Mobile Developer",
-    images: [
-      "/images/projects/yup-login.png",
-      "/images/projects/yup-map.jpg",
-      "/images/projects/yup-ride.jpg",
-      "/images/projects/yup-unlock.jpg"
-    ],
-    liveUrl: "https://yup.bike",
-    //githubUrl: "https://github.com/leithinoubli/yup-bike-app",
-    highlights: [
-      { label: "Active Users", value: "10K+" },
-      { label: "Daily Rides", value: "2,500+" },
-      { label: "Cities", value: "3" }
-    ]
-  },
+ 
   {
     title: "HIT - Horse Monitoring System",
     description: "AI-powered horse health monitoring platform with real-time alerts, live camera feeds, and anomaly detection.",
