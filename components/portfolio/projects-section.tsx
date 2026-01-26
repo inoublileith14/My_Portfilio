@@ -40,6 +40,7 @@ interface Project {
   technicalChallenges?: string
   architecture?: string
   impact?: string[]
+  decisionLog?: string
 }
 
 const projects: Project[] = [
@@ -75,6 +76,7 @@ const projects: Project[] = [
     ],
     architecture: "Designed a multi-tenant architecture with data isolation at multiple layers: Next.js Middleware intercepts requests to inject tenant context, Firebase Realtime Database uses tenant-scoped paths (tenants/{tenantId}/vehicles), and application-level filtering ensures zero cross-tenant data leakage. Implemented Google Maps marker clustering algorithm that dynamically groups markers based on zoom level and viewport bounds, reducing rendered markers from 5,000+ to <100 visible markers at any zoom level. SWR (stale-while-revalidate) caching strategy with 30-second TTL reduces API calls by 60% while maintaining data freshness. Server-Side Rendering (SSR) with Next.js App Router for initial page loads, reducing First Contentful Paint by 40%. Custom WebSocket connection manager with exponential backoff retry logic and connection pooling handles 5,000+ concurrent vehicle streams.",
     technicalChallenges: "Critical challenge: Multi-tenant data isolation at scale. Initial approach of application-level filtering was vulnerable to bugs causing data leaks. Solution: Implemented defense-in-depth with Next.js Middleware for request-level tenant injection, Firebase security rules for database-level isolation, and application-level validation. Trade-off: Added 15ms middleware overhead for bulletproof tenant isolation vs. faster but risky application-only filtering. Performance challenge: Google Maps API rate limiting and main-thread jank with 5,000+ markers. Solution: Implemented client-side marker clustering with viewport-based rendering and server-side geospatial indexing. Used requestAnimationFrame for smooth marker updates, reducing main-thread blocking by 80%. Trade-off: Slight complexity increase for 70% reduction in API calls and elimination of UI jank.",
+    decisionLog: "We implemented SWR for data fetching to balance real-time feel with Firebase cost-efficiency. This reduced unnecessary document reads by 40% while maintaining a snappy user experience. The stale-while-revalidate pattern allows us to serve cached data immediately while fetching fresh data in the background, eliminating perceived latency without increasing Firebase read costs.",
     impact: [
       "Reduced cloud egress costs by 40% through optimized data-fetching cycles",
       "Eliminated main-thread jank with marker clustering (5,000+ → <100 visible markers)",
@@ -117,6 +119,7 @@ const projects: Project[] = [
     ],
     architecture: "Designed a microservices architecture with NestJS API gateway handling authentication and business logic, dedicated ML inference service processing video streams, and HLS.js-based video streaming server for low-latency camera feeds. Authentication layer uses custom Axios interceptor that monitors JWT expiration (55-minute TTL) and automatically refreshes tokens 5 minutes before expiry, preventing session interruptions. Database schema uses PostgreSQL with TimescaleDB for time-series data, implementing hypertables for efficient partitioning of 6+ months of behavioral data. Frontend uses Next.js with React Server Components for initial render, transitioning to client-side HLS.js players for real-time video streaming. Production infrastructure: Docker containers orchestrated with docker-compose, Nginx reverse proxy handling SSL termination and load balancing, deployed on OVH Cloud with automated CI/CD pipeline. Implemented a priority-based message queue system ensuring critical alerts are processed within 30s SLA.",
     technicalChallenges: "Mission-critical challenge: Zero-session-dropouts during extended monitoring sessions (8+ hours). Initial JWT implementation caused session interruptions every 60 minutes. Solution: Built custom Axios interceptor system that tracks token expiration timestamps and proactively refreshes tokens 5 minutes before expiry. Interceptor intercepts all API requests, checks token age, and triggers refresh if needed—ensuring seamless user experience. Trade-off: Added 50ms interceptor overhead for 100% session continuity vs. user-facing authentication errors. Video streaming challenge: Processing 100+ concurrent RTSP streams with low latency. Initial FFmpeg transcoding consumed 80% CPU. Solution: Implemented HLS.js-based adaptive streaming with server-side HLS segment generation, offloading transcoding to optimized media servers. Used adaptive bitrate streaming to reduce bandwidth by 40% while maintaining quality. Trade-off: Slight complexity increase for 60% CPU reduction and sub-3-second latency.",
+    decisionLog: "We opted for HLS.js streaming over WebRTC. While WebRTC offers lower latency (~500ms vs ~3s), HLS provides superior stability and easier scaling across diverse network conditions in rural stable environments. HLS's adaptive bitrate streaming automatically adjusts quality based on available bandwidth, ensuring reliable video delivery even with unstable connections. This decision prioritized reliability and scalability over absolute lowest latency, which was acceptable for surveillance use cases where 3-second latency is imperceptible.",
     impact: [
       "Achieved zero-session-dropouts through automatic JWT rotation system",
       "Reduced video streaming latency from 8s to <3s with HLS.js pipeline",
@@ -330,6 +333,7 @@ function ProjectDetailModal({ project, onClose }: { project: Project, onClose: (
       aria-labelledby="project-modal-title"
     >
       <motion.div
+        key={project.title}
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -506,6 +510,19 @@ function ProjectDetailModal({ project, onClose }: { project: Project, onClose: (
                   </li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {/* Decision Log */}
+          {project.decisionLog && (
+            <div className="mt-8 p-6 rounded-xl border" style={{ borderColor: `${project.color}30`, backgroundColor: `${project.color}05` }}>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Cloud className="w-5 h-5" style={{ color: project.color }} />
+                Technical Decision Log
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {project.decisionLog}
+              </p>
             </div>
           )}
 

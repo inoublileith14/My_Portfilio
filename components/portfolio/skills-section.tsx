@@ -4,20 +4,21 @@ import { motion } from "framer-motion"
 
 const skillCategories = [
   {
-    title: "Core Architecture",
+    title: "Core Engineering",
     color: "#fa1e4e",
     description: "System design, patterns, and scalable architecture",
     skills: [
       "Next.js (App Router)",
       "TypeScript",
       "Advanced Design Patterns",
+      "Redux/State Management",
       "Microservices Architecture",
-      "Multi-tenant Systems",
-      "System Design"
-    ]
+      "Multi-tenant Systems"
+    ],
+    size: "large" as const
   },
   {
-    title: "Operations & DevOps",
+    title: "Infrastructure",
     color: "#00ffff",
     description: "Infrastructure, deployment, and reliability engineering",
     skills: [
@@ -27,23 +28,25 @@ const skillCategories = [
       "GCP",
       "OVH Cloud",
       "Infrastructure as Code"
-    ]
+    ],
+    size: "large" as const
   },
   {
-    title: "Real-Time Systems",
+    title: "Specialized Tech",
     color: "#ec4899",
     description: "Low-latency streaming and event-driven architectures",
     skills: [
       "HLS.js",
+      "Google Maps API",
+      "Firebase Realtime DB",
       "WebSockets",
       "WebRTC",
-      "Firebase Realtime DB",
-      "RTSP Streaming",
-      "Event-Driven Architecture"
-    ]
+      "RTSP Streaming"
+    ],
+    size: "medium" as const
   },
   {
-    title: "Leadership & Engineering Excellence",
+    title: "Leadership & Excellence",
     color: "#a855f7",
     description: "Technical leadership, mentorship, and documentation",
     skills: [
@@ -51,9 +54,9 @@ const skillCategories = [
       "System Design",
       "Mentorship",
       "Code Reviews",
-      "Architecture Decision Records",
-      "Technical Strategy"
-    ]
+      "Architecture Decision Records"
+    ],
+    size: "medium" as const
   }
 ]
 
@@ -90,15 +93,21 @@ export function SkillsSection() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, categoryIndex) => (
+        {/* Bento Box Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
+          {skillCategories.map((category, categoryIndex) => {
+            const isLarge = category.size === "large"
+            const colSpan = isLarge ? "md:col-span-2" : "md:col-span-1"
+            const rowSpan = isLarge ? "md:row-span-1" : "md:row-span-1"
+            
+            return (
             <motion.div
               key={category.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: categoryIndex * 0.1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30, delay: categoryIndex * 0.1 }}
               viewport={{ once: true }}
-              className="group relative p-6 rounded-xl border border-border bg-card/30 backdrop-blur-sm overflow-hidden"
+              className={`group relative p-6 rounded-xl border border-border bg-card/30 backdrop-blur-sm overflow-hidden ${colSpan} ${rowSpan}`}
             >
               {/* Glow effect on hover */}
               <div 
@@ -145,7 +154,8 @@ export function SkillsSection() {
                 ))}
               </div>
             </motion.div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

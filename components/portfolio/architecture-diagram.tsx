@@ -24,10 +24,11 @@ function HITAlertsDiagram({ color }: { color: string }) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Camera */}
+        {/* IP Camera */}
         <g>
           <rect x="50" y="150" width="80" height="100" rx="8" fill={color} opacity="0.2" stroke={color} strokeWidth="2" />
-          <text x="90" y="205" textAnchor="middle" fill={color} fontSize="14" fontWeight="600">RTSP Camera</text>
+          <text x="90" y="195" textAnchor="middle" fill={color} fontSize="14" fontWeight="600">IP Camera</text>
+          <text x="90" y="210" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">RTSP Stream</text>
           <path d="M 130 200 L 200 200" stroke={color} strokeWidth="2" markerEnd="url(#arrowhead)" />
         </g>
 
@@ -115,18 +116,18 @@ function YUPMobilityDiagram({ color }: { color: string }) {
           <text x="270" y="125" textAnchor="middle" fill={color} fontSize="14" fontWeight="600">Next.js</text>
           <text x="270" y="145" textAnchor="middle" fill={color} fontSize="12" fontWeight="600">Middleware</text>
           <line x1="270" y1="155" x2="270" y2="230" stroke={color} strokeWidth="1" opacity="0.5" />
-          <text x="270" y="170" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Tenant ID</text>
-          <text x="270" y="185" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Injection</text>
-          <text x="270" y="200" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Auth Check</text>
-          <text x="270" y="215" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Data Isolation</text>
+          <text x="270" y="170" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Tenant Check</text>
+          <text x="270" y="185" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Tenant ID</text>
+          <text x="270" y="200" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Injection</text>
+          <text x="270" y="215" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Auth Check</text>
           <path d="M 340 175 L 400 175" stroke={color} strokeWidth="2" markerEnd="url(#arrowhead)" />
         </g>
 
         {/* Firebase Realtime DB */}
         <g>
           <rect x="420" y="50" width="120" height="250" rx="8" fill={color} opacity="0.2" stroke={color} strokeWidth="2" />
-          <text x="480" y="75" textAnchor="middle" fill={color} fontSize="14" fontWeight="600">Firebase</text>
-          <text x="480" y="95" textAnchor="middle" fill={color} fontSize="12" fontWeight="600">Realtime DB</text>
+          <text x="480" y="75" textAnchor="middle" fill={color} fontSize="14" fontWeight="600">Firestore</text>
+          <text x="480" y="95" textAnchor="middle" fill={color} fontSize="12" fontWeight="600">(Scoped Data)</text>
           <line x1="480" y1="105" x2="480" y2="280" stroke={color} strokeWidth="1" opacity="0.5" />
           
           {/* Tenant Collections */}
@@ -139,8 +140,8 @@ function YUPMobilityDiagram({ color }: { color: string }) {
           <rect x="430" y="195" width="100" height="30" rx="4" fill={color} opacity="0.3" stroke={color} strokeWidth="1" />
           <text x="480" y="215" textAnchor="middle" fill={color} fontSize="10" fontWeight="600">tenants/tenant3/</text>
           
-          <text x="480" y="250" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Complete</text>
-          <text x="480" y="265" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Isolation</text>
+          <text x="480" y="250" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Scoped</text>
+          <text x="480" y="265" textAnchor="middle" fill={color} fontSize="11" opacity="0.8">Data</text>
         </g>
 
         {/* Google Maps */}

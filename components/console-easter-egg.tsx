@@ -9,7 +9,7 @@ export function ConsoleEasterEgg() {
       'color: #00ffff; font-size: 16px; font-weight: bold;'
     )
     console.log(
-      '%cLooking for a Senior Engineer? Let\'s talk architecture.',
+      '%cSystem Architect? Let\'s talk logic: inoublileith6@gmail.com',
       'color: #a855f7; font-size: 14px;'
     )
     console.log(
