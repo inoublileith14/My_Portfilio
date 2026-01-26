@@ -41,23 +41,21 @@ export function HeroSection() {
 
           {/* Value-driven headline */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-balance">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-red via-neon-magenta to-neon-purple">Architecting </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-red via-neon-magenta to-neon-purple">
-              Scalable Digital Experiences
-            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-red via-neon-magenta to-neon-purple">Full-Stack Engineer</span>
           </h1>
 
           {/* Sub-headline with value proposition */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed text-pretty">
-            Full-stack developer specializing in{" "}
-            <span className="text-neon-cyan font-semibold">Next.js</span>,{" "}
-            <span className="text-neon-magenta font-semibold">NestJS</span> &{" "}
-            <span className="text-neon-purple font-semibold">Flutter</span>.
+            Specializing in{" "}
+            <span className="text-neon-cyan font-semibold">high-availability IoT dashboards</span>{" "}
+            and{" "}
+            <span className="text-neon-magenta font-semibold">multi-tenant architectures</span>
+            {" "}that bridge complex hardware data (GPS/Video) with performant, scalable web infrastructure.
           </p>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            I turn complex business requirements into{" "}
-            <span className="text-foreground font-medium">high-performance, maintainable code</span>{" "}
-            for healthcare, mobility, and IoT industries.
+            I architect{" "}
+            <span className="text-foreground font-medium">mission-critical systems</span>{" "}
+            that handle real-time data streams, process 5,000+ concurrent connections, and maintain 99.9%+ uptime across distributed IoT deployments.
           </p>
 
           {/* CTA Buttons */}

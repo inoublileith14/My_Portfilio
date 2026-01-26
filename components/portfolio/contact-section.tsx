@@ -37,7 +37,7 @@ export function ContactSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
@@ -58,7 +58,7 @@ export function ContactSection() {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
             viewport={{ once: true }}
             className="space-y-6"
           >
@@ -118,6 +118,8 @@ export function ContactSection() {
                     hover:border-opacity-50"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  aria-label={`Visit ${social.name} profile`}
                   style={{
                     boxShadow: `0 0 0 1px ${social.color}10`
                   }}
@@ -125,7 +127,9 @@ export function ContactSection() {
                   <social.icon 
                     className="w-5 h-5 transition-colors" 
                     style={{ color: social.color }}
+                    aria-hidden="true"
                   />
+                  <span className="sr-only">{social.name}</span>
                   <div 
                     className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 
                       transition-opacity duration-300"
@@ -142,7 +146,7 @@ export function ContactSection() {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
             viewport={{ once: true }}
             className="relative p-8 rounded-2xl border border-border bg-card/30 backdrop-blur-sm 
               overflow-hidden flex flex-col justify-center"

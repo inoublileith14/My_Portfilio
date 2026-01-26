@@ -4,34 +4,56 @@ import { motion } from "framer-motion"
 
 const skillCategories = [
   {
-    title: "Frontend",
+    title: "Core Architecture",
     color: "#fa1e4e",
-    skills: ["React", "React Native", "Next.js", "TypeScript", "Tailwind CSS", "Flutter"]
+    description: "System design, patterns, and scalable architecture",
+    skills: [
+      "Next.js (App Router)",
+      "TypeScript",
+      "Advanced Design Patterns",
+      "Microservices Architecture",
+      "Multi-tenant Systems",
+      "System Design"
+    ]
   },
   {
-    title: "Backend",
+    title: "Operations & DevOps",
     color: "#00ffff",
-    skills: ["NestJS", "Express", "Supabase", "Node.js"]
+    description: "Infrastructure, deployment, and reliability engineering",
+    skills: [
+      "Docker",
+      "Nginx",
+      "CI/CD",
+      "GCP",
+      "OVH Cloud",
+      "Infrastructure as Code"
+    ]
   },
   {
-    title: "Databases",
-    color: "#a855f7",
-    skills: ["PostgreSQL", "MongoDB", "Firebase", "Redis"]
-  },
-  {
-    title: "Real-time & Streaming",
+    title: "Real-Time Systems",
     color: "#ec4899",
-    skills: ["WebSockets", "WebRTC", "RTSP", "Socket.io"]
+    description: "Low-latency streaming and event-driven architectures",
+    skills: [
+      "HLS.js",
+      "WebSockets",
+      "WebRTC",
+      "Firebase Realtime DB",
+      "RTSP Streaming",
+      "Event-Driven Architecture"
+    ]
   },
   {
-    title: "Maps & IoT",
-    color: "#00ffff",
-    skills: ["Mapbox", "Google Maps API", "BLE", "GPS Integration"]
-  },
-  {
-    title: "Cloud & DevOps",
+    title: "Leadership & Engineering Excellence",
     color: "#a855f7",
-    skills: ["Docker", "Google Cloud", "CI/CD", "Vercel"]
+    description: "Technical leadership, mentorship, and documentation",
+    skills: [
+      "Technical Documentation",
+      "System Design",
+      "Mentorship",
+      "Code Reviews",
+      "Architecture Decision Records",
+      "Technical Strategy"
+    ]
   }
 ]
 
@@ -64,7 +86,7 @@ export function SkillsSection() {
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto mb-8 rounded-full" />
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Technologies and tools I use to bring ideas to life
+            Engineering capabilities across architecture, infrastructure, and technical leadership
           </p>
         </motion.div>
 
@@ -95,7 +117,7 @@ export function SkillsSection() {
               />
 
               <h3 
-                className="text-lg font-semibold mb-4 flex items-center gap-2"
+                className="text-lg font-semibold mb-2 flex items-center gap-2"
                 style={{ color: category.color }}
               >
                 <span 
@@ -104,6 +126,9 @@ export function SkillsSection() {
                 />
                 {category.title}
               </h3>
+              <p className="text-xs text-muted-foreground mb-4">
+                {category.description}
+              </p>
 
               <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill) => (

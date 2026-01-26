@@ -3,15 +3,32 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
+import { ConsoleEasterEgg } from '@/components/console-easter-egg'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Leith Inoubli | Full-Stack Engineer',
-  description: 'Full-Stack Engineer specializing in React, Next.js, NestJS, Flutter, and React Native. Building high-quality web and mobile solutions.',
-  keywords: ['Full-Stack Developer', 'React', 'Next.js', 'NestJS', 'Flutter', 'React Native', 'TypeScript', 'Software Engineer'],
+  title: 'Leith Inoubli | Full-Stack Engineer | IoT & Scalable Systems',
+  description: ' Full-Stack Engineer specializing in high-availability IoT dashboards, multi-tenant architectures, and mission-critical systems. Expert in Next.js, NestJS, real-time streaming, and scalable infrastructure.',
+  keywords: [
+    'Full-Stack Engineer',
+    'Software Engineer',
+    'IoT Architecture',
+    'Scalable Systems',
+    'Multi-tenant Architecture',
+    'High-Availability Systems',
+    'Real-time Streaming',
+    'System Design',
+    'Next.js',
+    'NestJS',
+    'TypeScript',
+    'Docker',
+    'Nginx',
+    'Microservices',
+    'Technical Leadership'
+  ],
   authors: [{ name: 'Leith Inoubli' }],
   creator: 'Leith Inoubli',
   generator: 'v0.app',
@@ -31,8 +48,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://leithdev.com',
     siteName: 'Leith Inoubli',
-    title: 'Leith Inoubli | Full-Stack Engineer',
-    description: 'Full-Stack Engineer specializing in React, Next.js, NestJS, Flutter, and React Native.',
+    title: 'Leith Inoubli | Full-Stack Engineer | IoT & Scalable Systems',
+    description: 'Full-Stack Engineer specializing in high-availability IoT dashboards, multi-tenant architectures, and mission-critical systems. Expert in scalable infrastructure and real-time streaming.',
     images: [
       {
         url: '/logo.svg',
@@ -44,8 +61,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Leith Inoubli | Full-Stack Engineer',
-    description: 'Full-Stack Engineer specializing in React, Next.js, NestJS, Flutter, and React Native.',
+    title: 'Leith Inoubli | Full-Stack Engineer | IoT & Scalable Systems',
+    description: 'Full-Stack Engineer specializing in high-availability IoT dashboards, multi-tenant architectures, and mission-critical systems.',
     images: ['/logo.svg'],
   },
 }
@@ -67,8 +84,10 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
           <Analytics />
+          <ConsoleEasterEgg />
         </ThemeProvider>
       </body>
     </html>
   )
 }
+
