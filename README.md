@@ -623,7 +623,6 @@ The portfolio includes an intelligent AI chatbot that helps visitors explore you
 - **Anthropic Claude**: $5 free credit, no credit card needed
 - **OpenAI**: Requires paid account
 
-See [FREE_AI_SETUP.md](FREE_AI_SETUP.md) for detailed setup instructions for all providers.
 
 ## 👤 Author
 
