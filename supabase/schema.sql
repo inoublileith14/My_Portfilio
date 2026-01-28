@@ -66,6 +66,11 @@ CREATE TABLE IF NOT EXISTS page_views (
   user_agent TEXT,
   ip_address TEXT, -- Anonymized IP (e.g., 192.168.1.0)
   ip_hash TEXT, -- Hashed IP for privacy (one-way hash)
+  country TEXT, -- Country name from geolocation
+  country_code TEXT, -- ISO country code (e.g., US, ES)
+  city TEXT, -- City name
+  latitude DECIMAL(10, 8), -- Latitude for map
+  longitude DECIMAL(11, 8), -- Longitude for map
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
 );
 
@@ -85,6 +90,7 @@ CREATE TABLE IF NOT EXISTS click_events (
 CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views(path);
 CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_page_views_ip_hash ON page_views(ip_hash);
+CREATE INDEX IF NOT EXISTS idx_page_views_country ON page_views(country_code);
 CREATE INDEX IF NOT EXISTS idx_click_events_path ON click_events(path);
 CREATE INDEX IF NOT EXISTS idx_click_events_element ON click_events(element);
 CREATE INDEX IF NOT EXISTS idx_click_events_created_at ON click_events(created_at DESC);

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { anonymizeIP, hashIP } from '@/lib/utils'
+import { getIPGeolocation } from '@/lib/analytics/geolocation'
 
 // Rate limiting: simple in-memory store (use Redis in production)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
@@ -164,6 +165,19 @@ export async function POST(req: NextRequest) {
       const anonymizedIP = anonymizeIP(ip)
       const hashedIP = hashIP(ip)
 
+      // Get geolocation data (non-blocking - don't fail if it doesn't work)
+      let geolocation = null
+      try {
+        // Only get geolocation for non-anonymized IPs (before anonymization)
+        // For anonymized IPs, we can't get accurate location
+        if (ip && ip !== 'unknown' && !ip.startsWith('192.168.') && !ip.startsWith('127.')) {
+          geolocation = await getIPGeolocation(ip)
+        }
+      } catch (geoError) {
+        // Silently fail - geolocation is optional
+        console.warn('[Analytics] Geolocation failed:', geoError)
+      }
+
       const { data, error } = await supabase
         .from('page_views')
         .insert({
@@ -172,6 +186,11 @@ export async function POST(req: NextRequest) {
           user_agent: userAgent || null,
           ip_address: anonymizedIP,
           ip_hash: hashedIP,
+          country: geolocation?.country || null,
+          country_code: geolocation?.countryCode || null,
+          city: geolocation?.city || null,
+          latitude: geolocation?.latitude || null,
+          longitude: geolocation?.longitude || null,
         })
         .select()
 

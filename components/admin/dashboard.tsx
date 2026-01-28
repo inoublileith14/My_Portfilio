@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { adminLogout } from '@/lib/admin/auth'
 import { useRealtimeAnalytics } from '@/hooks/use-realtime-analytics'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts'
-import { LogOut, TrendingUp, MousePointerClick, Eye, FileText, Radio, Wifi, WifiOff, Users } from 'lucide-react'
+import { LogOut, TrendingUp, MousePointerClick, Eye, FileText, Radio, Wifi, WifiOff, Users, MapPin } from 'lucide-react'
+import { VisitorMap } from './visitor-map'
 
 interface AnalyticsData {
   totalPageViews: number
@@ -21,6 +22,14 @@ interface AnalyticsData {
   }>
   mostClickedElements: Array<{ element: string; count: number }>
   topIPPrefixes: Array<{ prefix: string; count: number }>
+  visitorLocations: Array<{
+    country: string
+    country_code: string
+    city: string
+    latitude: number
+    longitude: number
+    count: number
+  }>
   chartData: Array<{ date: string; views: number }>
 }
 
@@ -290,6 +299,25 @@ export function AdminDashboard() {
               />
             </LineChart>
           </ResponsiveContainer>
+        </div>
+
+        {/* Visitor Map */}
+        <div className="p-6 rounded-lg border border-border bg-card">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-semibold">Visitor Locations</h2>
+          </div>
+          {data.visitorLocations && data.visitorLocations.length > 0 ? (
+            <VisitorMap locations={data.visitorLocations} />
+          ) : (
+            <div className="h-96 flex flex-col items-center justify-center border border-border rounded-lg bg-secondary/50">
+              <MapPin className="w-12 h-12 text-muted-foreground mb-4 opacity-50" />
+              <p className="text-muted-foreground mb-2">No location data available yet</p>
+              <p className="text-xs text-muted-foreground text-center max-w-md">
+                Location data will appear here once visitors access your site. Make sure you've run the geolocation migration SQL.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

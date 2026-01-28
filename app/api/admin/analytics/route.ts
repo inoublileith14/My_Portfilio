@@ -116,6 +116,45 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10)
 
+    // Get visitor locations for map
+    const { data: locationData } = await supabase
+      .from('page_views')
+      .select('country, country_code, city, latitude, longitude')
+      .not('latitude', 'is', null)
+      .not('longitude', 'is', null)
+
+    // Group locations and count visitors per location
+    const locationMap = new Map<string, {
+      country: string
+      country_code: string
+      city: string
+      latitude: number
+      longitude: number
+      count: number
+    }>()
+
+    locationData?.forEach((pv) => {
+      if (pv.latitude && pv.longitude) {
+        const key = `${pv.latitude},${pv.longitude}`
+        const existing = locationMap.get(key)
+        if (existing) {
+          existing.count++
+        } else {
+          locationMap.set(key, {
+            country: pv.country || 'Unknown',
+            country_code: pv.country_code || 'XX',
+            city: pv.city || 'Unknown',
+            latitude: pv.latitude,
+            longitude: pv.longitude,
+            count: 1,
+          })
+        }
+      }
+    })
+
+    const visitorLocations = Array.from(locationMap.values())
+      .sort((a, b) => b.count - a.count)
+
     // Get page views for last 7 days (for chart)
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
@@ -152,6 +191,7 @@ export async function GET(req: NextRequest) {
       recentClicks: recentClicks || [],
       mostClickedElements,
       topIPPrefixes,
+      visitorLocations,
       chartData,
     })
   } catch (error) {
