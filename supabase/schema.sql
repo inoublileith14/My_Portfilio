@@ -19,12 +19,14 @@ CREATE INDEX IF NOT EXISTS idx_comments_created_at ON comments(created_at DESC);
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Anyone can read comments
+DROP POLICY IF EXISTS "Anyone can read comments" ON comments;
 CREATE POLICY "Anyone can read comments"
   ON comments
   FOR SELECT
   USING (true);
 
 -- Policy: Anyone can insert comments (you can add email validation later)
+DROP POLICY IF EXISTS "Anyone can insert comments" ON comments;
 CREATE POLICY "Anyone can insert comments"
   ON comments
   FOR INSERT
@@ -46,7 +48,95 @@ END;
 $$ language 'plpgsql';
 
 -- Trigger to automatically update updated_at
+DROP TRIGGER IF EXISTS update_comments_updated_at ON comments;
 CREATE TRIGGER update_comments_updated_at
   BEFORE UPDATE ON comments
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- ANALYTICS TABLES
+-- ============================================
+
+-- Create page_views table
+CREATE TABLE IF NOT EXISTS page_views (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  path TEXT NOT NULL,
+  referrer TEXT,
+  user_agent TEXT,
+  ip_address TEXT, -- Anonymized IP (e.g., 192.168.1.0)
+  ip_hash TEXT, -- Hashed IP for privacy (one-way hash)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
+);
+
+-- Create click_events table
+CREATE TABLE IF NOT EXISTS click_events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  path TEXT NOT NULL,
+  element TEXT NOT NULL,
+  x INTEGER NOT NULL,
+  y INTEGER NOT NULL,
+  ip_address TEXT, -- Anonymized IP (e.g., 192.168.1.0)
+  ip_hash TEXT, -- Hashed IP for privacy (one-way hash)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
+);
+
+-- Create indexes for analytics queries
+CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views(path);
+CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_page_views_ip_hash ON page_views(ip_hash);
+CREATE INDEX IF NOT EXISTS idx_click_events_path ON click_events(path);
+CREATE INDEX IF NOT EXISTS idx_click_events_element ON click_events(element);
+CREATE INDEX IF NOT EXISTS idx_click_events_created_at ON click_events(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_click_events_ip_hash ON click_events(ip_hash);
+
+-- Enable Row Level Security (read-only for analytics)
+ALTER TABLE page_views ENABLE ROW LEVEL SECURITY;
+ALTER TABLE click_events ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow inserts for tracking (public access)
+-- Specify roles explicitly to ensure it works with anon key
+DROP POLICY IF EXISTS "Allow page view inserts" ON page_views;
+CREATE POLICY "Allow page view inserts"
+  ON page_views
+  FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow click event inserts" ON click_events;
+CREATE POLICY "Allow click event inserts"
+  ON click_events
+  FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+-- Note: Reading analytics data should be done server-side with service role key
+-- No SELECT policies needed as we'll use service role for admin dashboard
+
+-- ============================================
+-- ENABLE REALTIME (for live analytics updates)
+-- ============================================
+
+-- Enable Realtime for analytics tables
+-- Note: This requires Realtime to be enabled in your Supabase project
+-- If the commands below fail, enable Realtime via Dashboard:
+-- 1. Go to Database → Replication
+-- 2. Find page_views and click_events tables
+-- 3. Toggle "Enable Realtime" for both tables
+
+DO $$
+BEGIN
+  -- Try to add tables to Realtime publication
+  -- This will fail silently if Realtime is not enabled
+  BEGIN
+    ALTER PUBLICATION supabase_realtime ADD TABLE page_views;
+  EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'Realtime not enabled for page_views. Enable it in Dashboard → Database → Replication';
+  END;
+  
+  BEGIN
+    ALTER PUBLICATION supabase_realtime ADD TABLE click_events;
+  EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'Realtime not enabled for click_events. Enable it in Dashboard → Database → Replication';
+  END;
+END $$;

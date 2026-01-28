@@ -214,7 +214,7 @@ components/
 
 3. **Set up environment variables**
    ```bash
-   cp .env.example .env.local
+   cp env.template .env.local
    ```
 
    Edit `.env.local` with your configuration:
@@ -222,7 +222,15 @@ components/
    # Supabase Configuration
    NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-   NEXT_PUBLIC_SITE_URL=https://your-domain.com
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   
+   # Admin Authentication (for analytics dashboard)
+   ADMIN_EMAIL=admin@leithdev.com
+   ADMIN_PASSWORD=supersecurepassword
+   ADMIN_SESSION_SECRET=change-this-to-random-string
+   
+   # Site Configuration
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
    
    # AI Chatbot Configuration (choose one)
    GROQ_API_KEY=your_groq_key_here              # Recommended: Free tier available
@@ -231,7 +239,11 @@ components/
    # OPENAI_API_KEY=your_openai_key              # Alternative: Paid account required
    ```
    
-   **💡 Tip:** Start with Groq for a free, fast AI chatbot. See [FREE_AI_SETUP.md](FREE_AI_SETUP.md) for detailed setup instructions.
+   **💡 Tips:**
+   - See `env.template` for all available options
+   - Start with Groq for a free, fast AI chatbot
+   - See [ANALYTICS_SETUP.md](ANALYTICS_SETUP.md) for analytics setup
+   - See [FREE_AI_SETUP.md](FREE_AI_SETUP.md) for AI chatbot setup
 
 4. **Set up Supabase database**
    - Create a new project at [supabase.com](https://supabase.com)
