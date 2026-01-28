@@ -30,7 +30,7 @@ function isBot(userAgent: string): boolean {
 }
 
 /**
- * Track a page view
+ * Track a page view with deduplication
  */
 export async function trackPageView(path: string, referrer?: string): Promise<void> {
   // Don't track admin pages
@@ -47,6 +47,41 @@ export async function trackPageView(path: string, referrer?: string): Promise<vo
       console.log('[Analytics] Skipping bot:', navigator.userAgent);
     }
     return;
+  }
+
+  // Deduplication: prevent double tracking within 2 seconds
+  if (typeof window !== 'undefined') {
+    const storageKey = `analytics_track_${path}`
+    const lastTracked = sessionStorage.getItem(storageKey)
+    const now = Date.now()
+    
+    if (lastTracked) {
+      const timeSinceLastTrack = now - parseInt(lastTracked, 10)
+      if (timeSinceLastTrack < 2000) { // 2 seconds
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Analytics] Skipping duplicate page view:', path);
+        }
+        return;
+      }
+    }
+    
+    // Store timestamp
+    sessionStorage.setItem(storageKey, now.toString())
+    
+    // Clean up old entries (older than 10 seconds)
+    try {
+      const keys = Object.keys(sessionStorage)
+      keys.forEach(key => {
+        if (key.startsWith('analytics_track_')) {
+          const timestamp = parseInt(sessionStorage.getItem(key) || '0', 10)
+          if (now - timestamp > 10000) {
+            sessionStorage.removeItem(key)
+          }
+        }
+      })
+    } catch (e) {
+      // Ignore storage errors
+    }
   }
 
   try {

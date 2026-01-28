@@ -11,11 +11,13 @@ import { trackPageView, initClickTracking } from '@/lib/analytics/tracker'
 export function TrackingProvider() {
   const pathname = usePathname()
   const hasTrackedInitialLoad = useRef(false)
+  const lastTrackedPath = useRef<string | null>(null)
 
   useEffect(() => {
-    // Track initial page load
+    // Track initial page load only once
     if (!hasTrackedInitialLoad.current && pathname && !pathname.startsWith('/admin')) {
       hasTrackedInitialLoad.current = true
+      lastTrackedPath.current = pathname
       // Small delay to ensure page is fully loaded
       setTimeout(() => {
         trackPageView(pathname)
@@ -25,7 +27,14 @@ export function TrackingProvider() {
 
   useEffect(() => {
     // Track page view on route change (but not on initial mount)
-    if (pathname && !pathname.startsWith('/admin') && hasTrackedInitialLoad.current) {
+    // Only track if pathname actually changed
+    if (
+      pathname && 
+      !pathname.startsWith('/admin') && 
+      hasTrackedInitialLoad.current &&
+      lastTrackedPath.current !== pathname
+    ) {
+      lastTrackedPath.current = pathname
       trackPageView(pathname)
     }
   }, [pathname])

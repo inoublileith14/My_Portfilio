@@ -14,6 +14,7 @@ interface VisitorLocation {
 
 interface VisitorMapProps {
   locations: VisitorLocation[]
+  onNewLocation?: (location: VisitorLocation) => void
 }
 
 // Dynamically import Leaflet components to avoid SSR issues
@@ -46,9 +47,15 @@ const MarkerClusterGroup = dynamic(
  * Professional Leaflet map with marker clustering
  * Shows individual visitor markers that cluster when close together
  */
-export function VisitorMap({ locations }: VisitorMapProps) {
+export function VisitorMap({ locations: initialLocations, onNewLocation }: VisitorMapProps) {
   const [mounted, setMounted] = useState(false)
   const [leafletLoaded, setLeafletLoaded] = useState(false)
+  const [locations, setLocations] = useState<VisitorLocation[]>(initialLocations)
+
+  // Update locations when prop changes
+  useEffect(() => {
+    setLocations(initialLocations)
+  }, [initialLocations])
 
   // Load Leaflet CSS, MarkerCluster CSS, and fix default icon
   useEffect(() => {
@@ -77,6 +84,14 @@ export function VisitorMap({ locations }: VisitorMapProps) {
       })
     }
   }, [])
+
+  // Handle new location updates from realtime
+  useEffect(() => {
+    if (onNewLocation) {
+      // This will be called from parent when realtime update comes in
+      // The parent will update initialLocations, which triggers the useEffect above
+    }
+  }, [onNewLocation])
 
   // Filter valid locations
   const validLocations = locations.filter(

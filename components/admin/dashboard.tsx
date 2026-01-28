@@ -71,11 +71,39 @@ export function AdminDashboard() {
           .slice(-7) // Keep last 7 days
       }
       
+      // Update visitor locations if new page view has geolocation
+      let updatedLocations = [...prev.visitorLocations]
+      if (newPageView.latitude && newPageView.longitude) {
+        const locationKey = `${newPageView.latitude},${newPageView.longitude}`
+        const existingLocation = updatedLocations.find(
+          loc => `${loc.latitude},${loc.longitude}` === locationKey
+        )
+        
+        if (existingLocation) {
+          // Increment count for existing location
+          existingLocation.count += 1
+        } else {
+          // Add new location
+          updatedLocations.push({
+            country: newPageView.country || 'Unknown',
+            country_code: newPageView.country_code || 'XX',
+            city: newPageView.city || 'Unknown',
+            latitude: newPageView.latitude,
+            longitude: newPageView.longitude,
+            count: 1,
+          })
+        }
+        
+        // Re-sort by count
+        updatedLocations.sort((a, b) => b.count - a.count)
+      }
+      
       return {
         ...prev,
         totalPageViews: newTotal,
         pageViewsPerPage: updatedPageViews,
         chartData: updatedChartData,
+        visitorLocations: updatedLocations,
       }
     })
   }, [])

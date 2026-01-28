@@ -165,6 +165,25 @@ export async function POST(req: NextRequest) {
       const anonymizedIP = anonymizeIP(ip)
       const hashedIP = hashIP(ip)
 
+      // Check for recent duplicate (same IP + path within last 2 seconds)
+      // This prevents double tracking from client-side issues
+      const twoSecondsAgo = new Date(Date.now() - 2000).toISOString()
+      const { data: recentViews } = await supabase
+        .from('page_views')
+        .select('id')
+        .eq('ip_hash', hashedIP)
+        .eq('path', path)
+        .gte('created_at', twoSecondsAgo)
+        .limit(1)
+
+      if (recentViews && recentViews.length > 0) {
+        // Duplicate detected - return success but don't insert
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Analytics] Duplicate page view detected, skipping:', { path, ip_hash: hashedIP })
+        }
+        return NextResponse.json({ success: true, skipped: true, reason: 'duplicate' })
+      }
+
       // Get geolocation data (non-blocking - don't fail if it doesn't work)
       let geolocation = null
       try {
@@ -243,12 +262,6 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       )
     }
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[Analytics] Page view inserted:', { id: data?.[0]?.id, path })
-    }
-
-    return NextResponse.json({ success: true, id: data?.[0]?.id })
   } catch (error) {
     console.error('[Analytics] Error tracking page view:', error)
     return NextResponse.json(
