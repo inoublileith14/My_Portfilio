@@ -644,6 +644,5 @@ See [FREE_AI_SETUP.md](FREE_AI_SETUP.md) for detailed setup instructions for all
   **Built with ❤️ using Next.js, TypeScript, Supabase, and AI**
   
   [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/inoublileith14/My_Portfilio)
-  [![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?logo=vercel)](https://my-portfilio-zeta.vercel.app)
   
 </div>
