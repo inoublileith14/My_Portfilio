@@ -69,7 +69,7 @@ export function ChatWidget() {
   useEffect(() => {
     if (status === "idle" && messagesEndRef.current) {
       setTimeout(() => {
-        if (messagesEndRef.current) {
+    if (messagesEndRef.current) {
           messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" })
         }
       }, 200) // Slightly longer delay to ensure content is fully rendered
