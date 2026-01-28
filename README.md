@@ -1,6 +1,31 @@
-# Portfolio Website - Leith Inoubli
+<div align="center">
+  <img src="https://raw.githubusercontent.com/inoublileith14/My_Portfilio/main/public/logo.svg" alt="Leith Inoubli Logo" width="200"/>
+  
+  # Portfolio Website - Leith Inoubli
+  
+  A modern, production-ready portfolio website built with Next.js 16, featuring an **AI-powered chatbot**, blog with Supabase-powered comments, dynamic project showcases, and a comprehensive resume section.
+  
+  [![Next.js](https://img.shields.io/badge/Next.js-16.0.10-black)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+  [![React](https://img.shields.io/badge/React-19.2.0-61dafb)](https://react.dev/)
+  [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)](https://supabase.com/)
+  
+  [Live Demo](https://my-portfilio-zeta.vercel.app) • [Documentation](#-getting-started) • [Features](#-features)
+</div>
 
-A modern, production-ready portfolio website built with Next.js 16, featuring a blog with Supabase-powered comments, dynamic project showcases, and a comprehensive resume section. The application demonstrates senior-level engineering practices including server-side rendering, type-safe API design, and scalable architecture patterns.
+---
+
+## ✨ Features
+
+- 🤖 **AI-Powered Chatbot** - Interactive portfolio assistant with support for multiple AI providers (Groq, OpenRouter, Anthropic, OpenAI)
+- 📝 **Blog System** - Technical blog posts with Supabase-powered comments and nested replies
+- 🎨 **Modern UI/UX** - Beautiful, responsive design with dark/light mode support
+- ⚡ **Performance Optimized** - Server Components, static generation, and code splitting
+- 🔒 **Type-Safe** - End-to-end TypeScript with Zod validation
+- 📱 **Fully Responsive** - Mobile-first design that works on all devices
+- 🚀 **Production Ready** - Optimized for deployment on Vercel, OVH Cloud, or Docker
+
+The application demonstrates senior-level engineering practices including server-side rendering, type-safe API design, and scalable architecture patterns.
 
 ## 🏗️ System Architecture
 
@@ -83,6 +108,13 @@ components/
 - **Next.js 16.0.10** - React framework with App Router
 - **React 19.2.0** - UI library
 - **TypeScript 5** - Type safety
+
+### AI & Chatbot
+- **Vercel AI SDK 6.0.55** - AI integration framework
+- **@ai-sdk/groq** - Groq AI provider (free tier)
+- **@ai-sdk/openai** - OpenAI provider
+- **@ai-sdk/anthropic** - Anthropic Claude provider
+- **@openrouter/ai-sdk-provider** - OpenRouter (300+ models)
 
 ### Styling & UI
 - **Tailwind CSS 4.1.9** - Utility-first CSS framework
@@ -187,10 +219,19 @@ components/
 
    Edit `.env.local` with your configuration:
    ```env
+   # Supabase Configuration
    NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
    NEXT_PUBLIC_SITE_URL=https://your-domain.com
+   
+   # AI Chatbot Configuration (choose one)
+   GROQ_API_KEY=your_groq_key_here              # Recommended: Free tier available
+   # OPENROUTER_API_KEY=your_openrouter_key      # Alternative: Access to 300+ models
+   # ANTHROPIC_API_KEY=your_anthropic_key        # Alternative: $5 free credit
+   # OPENAI_API_KEY=your_openai_key              # Alternative: Paid account required
    ```
+   
+   **💡 Tip:** Start with Groq for a free, fast AI chatbot. See [FREE_AI_SETUP.md](FREE_AI_SETUP.md) for detailed setup instructions.
 
 4. **Set up Supabase database**
    - Create a new project at [supabase.com](https://supabase.com)
@@ -558,13 +599,51 @@ pm2 start npm --name "portfolio" -- start
 
 This project is private and proprietary.
 
+## 🤖 AI Chatbot Setup
+
+The portfolio includes an intelligent AI chatbot that helps visitors explore your work. It supports multiple AI providers:
+
+### Quick Setup (Recommended: Groq - Free)
+
+1. **Get your free Groq API key:**
+   - Visit [console.groq.com](https://console.groq.com)
+   - Sign up (no credit card required)
+   - Create an API key
+
+2. **Add to `.env.local`:**
+   ```env
+   GROQ_API_KEY=your_groq_api_key_here
+   ```
+
+3. **Restart your dev server** - The chatbot will work immediately!
+
+### Other AI Providers
+
+- **OpenRouter**: Access to 300+ models including free ones
+- **Anthropic Claude**: $5 free credit, no credit card needed
+- **OpenAI**: Requires paid account
+
+See [FREE_AI_SETUP.md](FREE_AI_SETUP.md) for detailed setup instructions for all providers.
+
 ## 👤 Author
 
-**Leith Inoubli**
-- Portfolio: [leithdev.com](https://leithdev.com)
-- LinkedIn: [linkedin.com/in/leith-inoubli-352b05275](https://linkedin.com/in/leith-inoubli-352b05275)
-- Email: inoublileith6@gmail.com
+<div align="center">
+  
+  **Leith Inoubli**
+  
+  Full-Stack Engineer specializing in IoT & Scalable Systems
+  
+  [🌐 Portfolio](https://leithdev.com) • [💼 LinkedIn](https://linkedin.com/in/leith-inoubli-352b05275) • [📧 Email](mailto:inoublileith6@gmail.com)
+  
+</div>
 
 ---
 
-**Built with ❤️ using Next.js, TypeScript, and Supabase**
+<div align="center">
+  
+  **Built with ❤️ using Next.js, TypeScript, Supabase, and AI**
+  
+  [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/inoublileith14/My_Portfilio)
+  [![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?logo=vercel)](https://my-portfilio-zeta.vercel.app)
+  
+</div>
