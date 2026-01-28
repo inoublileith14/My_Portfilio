@@ -148,3 +148,69 @@ export function formatEmailNotification(data: {
 
   return message
 }
+
+/**
+ * Format new visitor notification for Telegram
+ */
+export function formatNewVisitorNotification(data: {
+  country?: string | null
+  countryCode?: string | null
+  city?: string | null
+  path: string
+  userAgent?: string | null
+  referrer?: string | null
+}): string {
+  const { country, countryCode, city, path, userAgent, referrer } = data
+
+  let message = `🆕 <b>New Visitor Detected!</b>\n\n`
+  
+  // Location info
+  if (city && country) {
+    message += `📍 <b>Location:</b> ${city}, ${country}`
+    if (countryCode) {
+      message += ` (${countryCode})`
+    }
+    message += `\n`
+  } else if (country) {
+    message += `📍 <b>Location:</b> ${country}`
+    if (countryCode) {
+      message += ` (${countryCode})`
+    }
+    message += `\n`
+  } else {
+    message += `📍 <b>Location:</b> Unknown\n`
+  }
+  
+  // Page visited
+  message += `📄 <b>Page:</b> ${path}\n`
+  
+  // Referrer
+  if (referrer) {
+    try {
+      const referrerUrl = new URL(referrer)
+      message += `🔗 <b>From:</b> ${referrerUrl.hostname}\n`
+    } catch {
+      message += `🔗 <b>From:</b> ${referrer.slice(0, 50)}\n`
+    }
+  } else {
+    message += `🔗 <b>From:</b> Direct visit\n`
+  }
+  
+  // User agent (simplified)
+  if (userAgent) {
+    let device = 'Unknown'
+    if (userAgent.includes('Mobile')) {
+      device = '📱 Mobile'
+    } else if (userAgent.includes('Tablet')) {
+      device = '📱 Tablet'
+    } else {
+      device = '💻 Desktop'
+    }
+    message += `\n${device}`
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yourdomain.com'
+  message += `\n\n🔗 <a href="${siteUrl}${path}">View Page</a>`
+
+  return message
+}

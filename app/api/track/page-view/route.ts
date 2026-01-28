@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { anonymizeIP, hashIP } from '@/lib/utils'
 import { getIPGeolocation } from '@/lib/analytics/geolocation'
+import { sendTelegramMessage, formatNewVisitorNotification } from '@/lib/notifications/telegram'
 
 // Rate limiting: simple in-memory store (use Redis in production)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
@@ -197,6 +198,20 @@ export async function POST(req: NextRequest) {
         console.warn('[Analytics] Geolocation failed:', geoError)
       }
 
+      // Check if this is a NEW IP address BEFORE inserting
+      // Only check if we have geolocation data (means it's a real visitor, not localhost)
+      let isNewVisitor = false
+      if (geolocation && geolocation.country) {
+        const { data: previousViews } = await supabase
+          .from('page_views')
+          .select('id')
+          .eq('ip_hash', hashedIP)
+          .limit(1)
+
+        // If no previous views found, this is a new visitor
+        isNewVisitor = !previousViews || previousViews.length === 0
+      }
+
       const { data, error } = await supabase
         .from('page_views')
         .insert({
@@ -247,6 +262,23 @@ export async function POST(req: NextRequest) {
 
       if (process.env.NODE_ENV === 'development') {
         console.log('[Analytics] Page view inserted:', { id: data?.[0]?.id, path })
+      }
+
+      // Send Telegram notification for new visitors (non-blocking)
+      if (isNewVisitor && geolocation) {
+        sendTelegramMessage(
+          formatNewVisitorNotification({
+            country: geolocation.country,
+            countryCode: geolocation.countryCode,
+            city: geolocation.city,
+            path,
+            userAgent,
+            referrer: referrer || null,
+          })
+        ).catch((error) => {
+          // Silently fail - notifications shouldn't break tracking
+          console.warn('[Analytics] Failed to send new visitor notification:', error)
+        })
       }
 
       return NextResponse.json({ success: true, id: data?.[0]?.id })
