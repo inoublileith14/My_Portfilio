@@ -1,0 +1,23 @@
+{
+  "name": "Leith Inoubli - Full-Stack Engineer",
+  "short_name": "Leith Inoubli",
+  "description": "Full-Stack Engineer specializing in React, Next.js, NestJS, Flutter, and React Native",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0d0d0d",
+  "background_color": "#0d0d0d",
+  "display": "standalone",
+  "start_url": "/",
+  "orientation": "portrait-primary"
+}
