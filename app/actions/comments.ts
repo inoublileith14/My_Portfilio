@@ -56,6 +56,33 @@ export async function createComment(formData: FormData) {
     }
 
     revalidatePath(`/blog/${validated.postSlug}`)
+    
+    // Send Telegram notification (non-blocking)
+    try {
+      // Get blog post title if available
+      const { getBlogPost } = await import('@/lib/blog')
+      const post = getBlogPost(validated.postSlug)
+      
+      // Send notification in background (don't wait for it)
+      fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/notifications/comment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          authorName: validated.authorName,
+          authorEmail: validated.authorEmail,
+          content: validated.content,
+          postSlug: validated.postSlug,
+          postTitle: post?.title,
+        }),
+      }).catch((err) => {
+        console.error('[Comment Notification] Failed to send:', err)
+        // Don't fail the comment creation if notification fails
+      })
+    } catch (error) {
+      // Silently fail - notification is optional
+      console.error('[Comment Notification] Error:', error)
+    }
+    
     return { success: true, data }
   } catch (error) {
     if (error instanceof z.ZodError) {
